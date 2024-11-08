@@ -5,9 +5,9 @@ import os
 
 def main():
     
-    handle = 0
+    handle = None
     print("----------------------------")
-    print("CS108 Firmware Upgrade Toool")
+    print("CS710S Firmware Upgrade Toool")
     print("----------------------------")
 
     if (len(sys.argv) < 3) or (sys.argv[1].lower() != "/b" and sys.argv[1].lower() != "/n" and sys.argv[1].lower() != "/r"):
@@ -23,16 +23,10 @@ def main():
     for i in range(NumOfConnectedDevices):
         print("Device {}: {}".format(i, HID.GetHidString(i)))      
     
-    if NumOfConnectedDevices > 0:
-        print("Open the first device found...")
-        handle = HID.Open(0)
-        if handle != None:
-            print("Device opened: handle={}".format(handle))
-        else:
-            print("Unable to open device")
-            return
+    if NumOfConnectedDevices != 0:
+        handle = HID.Open()
     else:
-        print("No CS108 device connected")
+        print("No CS710S device connected")
         return
 
     if sys.argv[1].lower() == "/b":

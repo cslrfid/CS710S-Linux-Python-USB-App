@@ -6,17 +6,14 @@ import Constants
 
 def TransmitData(handle, buffer):
     success = False
-
-    if (HID.IsOpen(handle)):
+    
+    if (HID.GetNumHidDevices() > 0):
         try:
             success = HID.TransmitData(handle, buffer)
-
-        except:
-            print("USBSocket: Transmission error")
+            
+        except Exception as err:
+            print(f"USBSocket: Transmission error {err=}, {type(err)=}")
             success = False
-    else:
-        print("USBSocket: Transmission error")
-        success = False
     
     return success
 
@@ -32,13 +29,12 @@ def ReceiveData(handle, bufferSize, timeout):
             bytesRead = len(result)
             timeElapsed = (time.monotonic() - timer) * 1000 
             if (not success) or (timeElapsed > timeout):
-                print("USBSocket: recive timeout")
+                # print("USBSocket: recive timeout")
                 success = False
                 break
             time.sleep(Constants.TIMER_READ * 0.001)
-    except:
-        print("USBSocket: failed receiving data")
-        success = False
+    except Exception as err:
+        print(f"USBSocket: unexpected {err=}, {type(err)=}")
     
     return success, result
 

@@ -21,14 +21,13 @@ def GetVersion():
     return bytes(buffer)
 
 
-def SendImageData(subpart_data, subpart):
-    buffer = bytearray(78)
-    total_subpart = Constants.BT_IMAGE_TOTAL_SUBPART
+def SendImageData(subpart_data, total_subpart, subpart, length):
+    buffer = bytearray(248)
 
     # header
     buffer[0] = Constants.PREFIX
     buffer[1] = Constants.CONNECTION_USB
-    buffer[2] = 70 #payload length
+    buffer[2] = 240 #payload length
     buffer[3] = Constants.TYPE_BT
     buffer[4] = Constants.RESERVE
     buffer[5] = Constants.LINK_DOWN
@@ -42,7 +41,10 @@ def SendImageData(subpart_data, subpart):
     buffer[12] = (subpart >> 8) & 0xFF
     buffer[13] = subpart & 0xFF
 
-    for i in range(0, len(subpart_data)):
+    for i in range(0, length):
         buffer[i + 14] = subpart_data[i]
+    
+    for i in range(length, 234):
+        buffer[i + 14] = 0xFF
 
     return bytes(buffer)
