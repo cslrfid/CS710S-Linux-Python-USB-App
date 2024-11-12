@@ -25,7 +25,7 @@ def ReceiveData(handle, bufferSize, timeout):
         bytesRead = 0
         timer = time.monotonic()
         while bytesRead == 0:
-            success, result = HID.ReceiveData(handle, bufferSize)
+            success, result = HID.ReceiveData(handle, bufferSize, timeout)
             bytesRead = len(result)
             timeElapsed = (time.monotonic() - timer) * 1000 
             if (not success) or (timeElapsed > timeout):
